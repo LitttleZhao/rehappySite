@@ -1,0 +1,88 @@
+{% extends "teacher/base_tch.html" %}
+
+{% block header %}
+  {% if single_message %}
+    {{ message.title }}
+  {% else %}
+    Messages
+  {% endif %}
+{% endblock %}
+
+{% block Messages %}active{% endblock %}
+
+{#{% block edit %}#}
+{#{% if single_note %}#}
+{#  {% url "Notes:update_note" note.course.term.term_slug note.course.course_slug note.note_slug %}#}
+{#{% elif single_course %}#}
+{#  {% url "Notes:notes_of_course_edit" slug=term_slug course_id=course_id %}#}
+{#{% else %}#}
+{#  {% url "Notes:note_edit" %}#}
+{#{% endif %}#}
+{#{% endblock %}#}
+
+{% block content %}
+
+<style media="screen">
+  .add-note-to-course{
+    margin: 0px 83%;
+  }
+  .add-note-button{
+    margin: 0px 88.3%;
+  }
+</style>
+{# 这里的single_message就是open一个单独的message #}
+{% if single_message %}
+
+  {{message.body|safe}}
+
+{% else %}
+
+<table class="table">
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">User</th>
+      <th scope="col">Title</th>
+      <th scope="col">Date Created</th>
+      <th scope="col">View</th>
+    </tr>
+  </thead>
+
+{% if messages|length == 0 %}
+
+<tbody>
+  <tr>
+    <th scope="row">Lecture 1: Example</th>
+    <td>Example Class</td>
+    <td>January 1, 2019, 12:01 a.m.</td>
+    <td> Open </td>
+  </tr>
+</tbody>
+</table>
+
+
+
+{% else %}
+
+  <tbody>
+    {% for message in messages %}
+    <tr>
+      <th scope="row">{{ message.user }}</th>
+      <td>{{ message.title }}</td>
+      <td>{{ message.created_at }}</td>
+      <td>
+        <a href="{% url "teacher:one_message" message.message_slug %}">
+         Open </a>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+  </table>
+
+
+
+{% endif %}
+{% endif %}
+
+
+
+{% endblock %}

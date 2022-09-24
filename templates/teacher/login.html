@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="utf-8">
+    <title>Teacher</title>
+
+    {% load static %}
+
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+            integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+            crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"
+            integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4"
+            crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js"
+            integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1"
+            crossorigin="anonymous"></script>
+
+    <!-- bootstrapCDN -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+            integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+            crossorigin="anonymous"></script>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="{% static "css/base.css" %}">
+    <link href="https://fonts.googleapis.com/css?family=Fredoka+One" rel="stylesheet">
+
+</head>
+<body>
+{% load crispy_forms_tags %}
+{% load static %}
+{% block register %}
+
+<!-- CSS -->
+<link rel="stylesheet" href="{% static "css/index.css" %}">
+
+<div class="container">
+  <div id = "loginbox" class="jumbotron">
+    <div class="container text-center">
+      <h3>Teacher Login</h3>
+      <p></p>
+    </div>
+    <div class="container">
+      <form class="" action="{% url "teacher:login" %}" method="post">
+        {% csrf_token %}
+        {{ form|crispy }}
+        <div class="container text-center">
+          <input class ="btn btn-primary" type="submit" value="Log In">
+          <p></p>
+          <h6>Don't have an account?<a href="{% url "teacher:register" %}"> Sign up</a></h6>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
+
+</body>
+
+</html>

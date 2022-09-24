@@ -1,0 +1,37 @@
+{% extends "student/base_std.html" %}
+
+{% block header %}Sheets board{% endblock %}
+{% block studentname %}{{ studentname }}{% endblock %}
+{% block dashview %}{% url "api-root" %}{% endblock %}
+{% block sheetboard %}active{% endblock %}
+
+{% block content %}
+
+    <style media="screen">
+        .buffer {
+            margin: 2px 5px 5px 0px;
+        }
+    </style>
+
+    <div class="row">
+        {% for sheet in sheets %}
+            <div class="card-group buffer">
+                <div class="card" style="width: 18rem;">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ sheet.title }}</h5>
+                        <p class="card-text">{{ sheet.created_at }}</p>
+                        <a href="{% url "student:one_sheet" studentname sheet.sheet_slug %}"
+                           class="card-link">View</a>
+                    </div>
+                </div>
+            </div>
+            {% if forloop.counter|divisibleby:4 %}
+                </div>
+                <div class="row">
+            {% endif %}
+        {% endfor %}
+        </div>
+
+
+
+{% endblock %}

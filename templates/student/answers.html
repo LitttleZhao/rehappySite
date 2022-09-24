@@ -1,0 +1,24 @@
+{% extends "student/base_std.html" %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+{% block header %}{{ title }}{% endblock %}
+{% block studentname %}{{ studentname }}{% endblock %}
+{% block sheetboard %}active{% endblock %}
+
+{% block content %}
+
+    <form class="w-25" enctype="multipart/form-data" action="{% url "student:answers" studentname %}" method="post">
+        {% csrf_token %}
+        <input name="title" style="visibility: hidden" value="{{ title }}">
+        <input name="week_slug" style="visibility: hidden" value="{{ week_slug }}">
+        {{ form.media }}
+        {{ form|crispy }}
+        <input class="btn btn-primary" type="submit" name="" value="Save">
+    </form>
+
+    <script src="{% static "js/notes.js" %}" charset="utf-8"></script>
+<script>
+
+</script>
+{% endblock %}

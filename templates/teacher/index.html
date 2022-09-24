@@ -1,0 +1,169 @@
+{% extends "teacher/base_tch.html" %}
+
+{% block header %}
+    {% if single_student %}
+        {{ student.std_name }}
+    {% else %}
+        Students
+    {% endif %}
+{% endblock %}
+
+{% block Students %}active{% endblock %}
+
+{#{% block edit %}#}
+{#{% if single_note %}#}
+{#  {% url "Notes:update_note" note.course.term.term_slug note.course.course_slug note.note_slug %}#}
+{#{% elif single_course %}#}
+{#  {% url "Notes:notes_of_course_edit" slug=term_slug course_id=course_id %}#}
+{#{% else %}#}
+{#  {% url "Notes:note_edit" %}#}
+{#{% endif %}#}
+{#{% endblock %}#}
+
+{% block content %}
+    <script type="text/javascript" src="https://assets.pyecharts.org/assets/echarts.min.js"></script>
+    <script src="https://cdn.bootcss.com/jquery/3.0.0/jquery.min.js"></script>
+    <script src="https://assets.pyecharts.org/assets/echarts-liquidfill.min.js" type="text/javascript"></script>
+
+
+
+
+
+
+    <style media="screen">
+        .add-note-to-course {
+            margin: 0px 83%;
+        }
+
+        .add-note-button {
+            margin: 0px 88.3%;
+        }
+    </style>
+    {# 这里的single_message就是open一个单独的message #}
+    {% if single_student %}
+        
+        {% block line_chart %}{% endblock %}
+
+
+        <div class="card bg-light mb-3" style="width:800px; height:360px;float: left">
+            <div class="card-header">Header</div>
+            <div class="card-body" id="lin_bar">
+
+            </div>
+        </div>
+        <div class="card bg-light mb-3" style="width:400px; height:360px;float: left;margin-left: 25px">
+            <div class="card-header">Header</div>
+            <div class="card-body" id="liq_bar">
+
+            </div>
+        </div>
+
+        <script>
+            var lin_chart = echarts.init(document.getElementById('lin_bar'), 'white', {renderer: 'canvas'});
+
+
+            $(
+                function () {
+                    fetchData(lin_chart);
+                }
+            );
+
+            function fetchData() {
+                $.ajax(
+                    {
+                        type: "GET",
+                        url: "http://127.0.0.1:8000/teacher/echart/line-chart/" + "{{ student.std_name }}" + "/",
+                        dataType: 'json',
+                        success: function (result) {
+                            lin_chart.setOption(result.data);
+                            alert('那这里呢')
+                        }
+                    });
+            }
+        </script>
+
+        <script>
+            var liq_chart = echarts.init(document.getElementById('liq_bar'), 'white', {renderer: 'canvas'});
+
+
+            $(
+                function () {
+                    fetchData(liq_chart);
+                }
+            );
+            alert('这个地方接收数据成功嘛')
+
+            function fetchData() {
+                alert('这个地方接收数据成功嘛')
+                $.ajax(
+                    {
+                        type: "GET",
+                        url: "http://127.0.0.1:8000/teacher/echart/liquid-chart/" + "{{ student.std_name }}" + "/",
+                        dataType: 'json',
+                        success: function (result) {
+                            liq_chart.setOption(result.data);
+                            alert('这里呢')
+                        }
+                    });
+            }
+        </script>
+
+    {% else %}
+
+        <table class="table">
+            <thead class="thead-dark">
+            <tr>
+                <th scope="col">Name</th>
+                <th scope="col">Gender</th>
+                <th scope="col">Age</th>
+                <th scope="col">ID</th>
+                <th scope="col">Class</th>
+                <th scope="col">College</th>
+                <th scope="col">View</th>
+            </tr>
+            </thead>
+
+            {% if students|length == 0 %}
+
+                <tbody>
+                <tr>
+                    <th scope="row">Lecture 1: Example</th>
+                    <td>Example Class</td>
+                    <td>January 1, 2019, 12:01 a.m.</td>
+                    <td> Open</td>
+                    <td> Open</td>
+                    <td> Open</td>
+                </tr>
+                </tbody>
+                </table>
+
+
+
+            {% else %}
+
+                <tbody>
+                {% for student in students %}
+                    <tr>
+                        <th scope="row">{{ student.std_name }}</th>
+                        <td>{{ student.std_gender }}</td>
+                        <td>{{ student.std_age }}</td>
+                        <td>{{ student.std_id }}</td>
+                        <td>{{ student.std_class }}</td>
+                        <td>{{ student.std_college }}</td>
+                        <td>
+                            <a href="{% url "teacher:one_student" student.std_name %}">
+                                Open </a>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+                </table>
+
+
+
+            {% endif %}
+    {% endif %}
+
+
+
+{% endblock %}
